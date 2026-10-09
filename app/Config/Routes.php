@@ -59,3 +59,22 @@ $routes->post(
     'Products::delete/$1',
     ['filter' => 'auth']
 );
+
+// Protected sales routes
+$routes->get(
+    'sales',
+    'Sales::index',
+    ['filter' => 'auth']
+);
+
+$routes->get(
+    'sales/new',
+    'Sales::new',
+    ['filter' => 'auth']
+);
+
+$routes->post(
+    'sales',
+    'Sales::create',
+    ['filter' => 'auth']
+);
