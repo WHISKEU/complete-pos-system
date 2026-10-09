@@ -22,3 +22,40 @@ $routes->post('users/update/(:num)', 'Users::update/$1', ['filter' => 'auth']);
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::authenticate');
 $routes->get('logout', 'Auth::logout');
+
+// Protected product routes
+$routes->get(
+    'products',
+    'Products::index',
+    ['filter' => 'auth']
+);
+
+$routes->get(
+    'products/new',
+    'Products::new',
+    ['filter' => 'auth']
+);
+
+$routes->post(
+    'products',
+    'Products::create',
+    ['filter' => 'auth']
+);
+
+$routes->get(
+    'products/edit/(:num)',
+    'Products::edit/$1',
+    ['filter' => 'auth']
+);
+
+$routes->post(
+    'products/update/(:num)',
+    'Products::update/$1',
+    ['filter' => 'auth']
+);
+
+$routes->post(
+    'products/delete/(:num)',
+    'Products::delete/$1',
+    ['filter' => 'auth']
+);
