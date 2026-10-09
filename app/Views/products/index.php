@@ -24,12 +24,12 @@
     <a href="<?= site_url('logout') ?>">Logout</a>
 </nav>
 
-<main class="container">
+<main class="accounts-container">
 
-    <div class="page-header">
+    <div class="accounts-header">
         <h1>Product Management</h1>
 
-        <a href="<?= site_url('products/new') ?>" class="btn-add">
+        <a class="add-button" href="<?= site_url('products/new') ?>">
             + Add New Product
         </a>
     </div>
