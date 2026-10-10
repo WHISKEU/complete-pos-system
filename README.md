@@ -1,38 +1,22 @@
-# SimplePOS
+# Complete POS System
 
-SimplePOS is a basic Point-of-Sale website built with CodeIgniter 4. The Customer Accounts and User Accounts pages retrieve records from a MySQL database through CodeIgniter Models.
+A Point-of-Sale system built with CodeIgniter 4, PHP, MySQL, HTML, and CSS.
 
 ## Features
 
-- Landing page
-- About page
-- Customer Accounts page
-- User Accounts page
-- MySQL database integration
-- CodeIgniter Models and Query Builder
-- Create and edit customer accounts
-- Create and edit user accounts
-- Server-side form validation
-- Unique username validation
-- Philippine mobile number validation
-- JPG and PNG avatar upload up to 2 MB
-- Automatic 300 × 300 avatar preparation
-- Default avatar placeholder
+- Staff authentication and protected routes
+- Customer and staff account CRUD
+- Hashed passwords and password changing
+- Avatar and product image uploads
+- Product and inventory management
+- Sales recording and automatic stock reduction
+- Insufficient-stock validation
+- Sales History
 
-## Uses
+## Demo Login
+- Username: admin01
+- Password: SimplePOS123!
 
-- PHP
-- Composer
-- XAMPP
-- MySQL
-- CodeIgniter 4
-- PHP GD extension enabled for image resizing
-
-## Installation
-
-1. Download or clone this repository.
-2. Open the project folder in Command Prompt.
-3. Install the required dependencies:
-
-```bash
-composer install
+## Developers
+- Jilianne Paquibot
+- Charissa Haban
