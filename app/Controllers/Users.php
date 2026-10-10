@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use CodeIgniter\Exceptions\PageNotFoundException;           
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Users extends BaseController
 {
@@ -11,11 +11,9 @@ class Users extends BaseController
     {
         $userModel = new UserModel();
 
-        $data = [
+        return view('users/index', [
             'users' => $userModel->findAll()
-        ];
-
-        return view('users/index', $data);
+        ]);
     }
 
     public function new(): string
@@ -26,9 +24,29 @@ class Users extends BaseController
     public function create()
     {
         $rules = [
-            'username'  => 'required|max_length[50]|is_unique[users.username]',
-            'full_name' => 'required|max_length[100]',
-            'password'  => 'required|min_length[8]|max_length[255]'
+            'username' => [
+                'label' => 'Username',
+                'rules' => [
+                    'required',
+                    'max_length[50]',
+                    'is_unique[users.username]'
+                ]
+            ],
+            'full_name' => [
+                'label' => 'Full name',
+                'rules' => [
+                    'required',
+                    'max_length[100]'
+                ]
+            ],
+            'password' => [
+                'label' => 'Password',
+                'rules' => [
+                    'required',
+                    'min_length[8]',
+                    'max_length[255]'
+                ]
+            ]
         ];
 
         if (! $this->validate($rules)) {
@@ -38,9 +56,13 @@ class Users extends BaseController
         $userModel = new UserModel();
 
         $userModel->insert([
-            'username'  => trim((string) $this->request->getPost('username')),
-            'full_name' => trim((string) $this->request->getPost('full_name')),
-            'password'  => password_hash(
+            'username' => trim(
+                (string) $this->request->getPost('username')
+            ),
+            'full_name' => trim(
+                (string) $this->request->getPost('full_name')
+            ),
+            'password' => password_hash(
                 (string) $this->request->getPost('password'),
                 PASSWORD_DEFAULT
             )
@@ -77,10 +99,50 @@ class Users extends BaseController
             );
         }
 
+        $newPassword = (string) $this->request->getPost(
+            'password'
+        );
+
         $rules = [
-            'username' => "required|max_length[50]|is_unique[users.username,id,{$id}]",
-            'full_name' => 'required|max_length[100]'
+            'username' => [
+                'label' => 'Username',
+                'rules' => [
+                    'required',
+                    'max_length[50]',
+                    "is_unique[users.username,id,{$id}]"
+                ]
+            ],
+            'full_name' => [
+                'label' => 'Full name',
+                'rules' => [
+                    'required',
+                    'max_length[100]'
+                ]
+            ]
         ];
+
+        /*
+         * Only validate password fields when the user enters
+         * a new password.
+         */
+        if ($newPassword !== '') {
+            $rules['password'] = [
+                'label' => 'New password',
+                'rules' => [
+                    'required',
+                    'min_length[8]',
+                    'max_length[255]'
+                ]
+            ];
+
+            $rules['password_confirm'] = [
+                'label' => 'Confirm password',
+                'rules' => [
+                    'required',
+                    'matches[password]'
+                ]
+            ];
+        }
 
         $avatar = $this->request->getFile('avatar');
 
@@ -97,9 +159,12 @@ class Users extends BaseController
                     'ext_in[avatar,jpg,jpeg,png]'
                 ],
                 'errors' => [
-                    'max_size' => 'The profile picture must not exceed 2 MB.',
-                    'mime_in' => 'The profile picture must be a JPG or PNG image.',
-                    'ext_in' => 'The profile picture must use a JPG, JPEG, or PNG extension.'
+                    'max_size' =>
+                        'The profile picture must not exceed 2 MB.',
+                    'mime_in' =>
+                        'The profile picture must be a JPG or PNG image.',
+                    'ext_in' =>
+                        'The profile picture must use a JPG, JPEG, or PNG extension.'
                 ]
             ];
         }
@@ -109,9 +174,24 @@ class Users extends BaseController
         }
 
         $data = [
-            'username' => trim((string) $this->request->getPost('username')),
-            'full_name' => trim((string) $this->request->getPost('full_name'))
+            'username' => trim(
+                (string) $this->request->getPost('username')
+            ),
+            'full_name' => trim(
+                (string) $this->request->getPost('full_name')
+            )
         ];
+
+        /*
+         * If no password was entered, the existing password
+         * remains unchanged.
+         */
+        if ($newPassword !== '') {
+            $data['password'] = password_hash(
+                $newPassword,
+                PASSWORD_DEFAULT
+            );
+        }
 
         if ($hasAvatar) {
             $uploadPath = FCPATH . 'uploads/avatars';
